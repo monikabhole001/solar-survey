@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Solar Survey
+
+A 5-step survey app that helps users check whether a solar system might be suitable for their property.  
+
+Built with **Next.js 15 (App Router)**, **TypeScript**, **Zod**, and **Tailwind CSS**.
+
+---
+
+## Features
+
+- **Survey Form**
+  - 5 required questions (property type, roof orientation, roof age, consumption, interest in other solutions).
+  - Optional contact info (name, email, phone).
+- **Validation**
+  - Server-side validation using **Zod** ensures correct and safe input.
+  - Business rule enforced: `"Keine Angabe"` (not specified) cannot be combined with other orientations.
+- **API Endpoint**
+  - `POST /api/submit` accepts survey payload.
+  - Responds with a random **yes/no** verdict.
+- **Results**
+  - Two styled result screens (positive or negative).
+  - Reset button to return to the survey form.
+- **UI/UX**
+  - Modern responsive design using Tailwind CSS.
+  - Clean typography, green accent color, and error handling messages.
+
+---
+
+## Screenshots
+
+### Survey Form:
+![Survey Form](./docs/form.png)
+
+### Result Screen:
+![Result Screen](./docs/result.png)
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/monikabhole001/solar-survey.git
+cd solar-survey
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run the development server
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## API Endpoint Details
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**URL**  
+```
+POST /api/submit
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Example Request**
+```json
+{
+  "propertyType": "Einfamilienhaus",
+  "orientations": ["Süd"],
+  "roofAge": "Unter 5 Jahre",
+  "annualConsumption": "3.000–5.000 kWh",
+  "interestedInOtherSolutions": "Ja"
+}
+```
 
-## Deploy on Vercel
+**Example Responses**
+```json
+{ "verdict": "yes" }
+```
+or
+```json
+{ "verdict": "no" }
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Example Validation Error**
+```json
+{
+  "errors": {
+    "fieldErrors": {
+      "orientations": [
+        "\"Keine Angabe\" darf nicht mit anderen Optionen kombiniert werden"
+      ]
+    }
+  }
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Tech Stack
+
+- [Next.js 15](https://nextjs.org/) — React framework with App Router  
+- [TypeScript](https://www.typescriptlang.org/) — static typing  
+- [Zod](https://zod.dev/) — schema-based validation  
+- [Tailwind CSS](https://tailwindcss.com/) — styling framework  
+
+---
